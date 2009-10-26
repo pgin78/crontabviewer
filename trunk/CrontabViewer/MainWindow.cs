@@ -248,16 +248,12 @@ namespace MaciejRogozinski.CrontabViewer
         private void prevDayBtn_Click(object sender, EventArgs e)
         {
             this.dateFilter.Value = this.dateFilter.Value.AddDays(-1);
-            this.timeFilterFrom.Value = this.timeFilterFrom.Value.AddDays(-1);
-            this.timeFilterTo.Value = this.timeFilterTo.Value.AddDays(-1);
             this.RefreshInstanceList();
         }
 
         private void nextDayBtn_Click(object sender, EventArgs e)
         {
             this.dateFilter.Value = this.dateFilter.Value.AddDays(1);
-            this.timeFilterFrom.Value = this.timeFilterFrom.Value.AddDays(1);
-            this.timeFilterTo.Value = this.timeFilterTo.Value.AddDays(1);
             this.RefreshInstanceList();
         }
 
