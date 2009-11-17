@@ -20,11 +20,13 @@ namespace MaciejRogozinski.CrontabViewer.Engine
         /// <param name="to">specifies right border of date range</param>
         public void FilterByTime(DateTime from, DateTime to)
         {
+            DateTime d1 = new DateTime(from.Year, from.Month, from.Day, from.Hour, from.Minute, 0);
+            DateTime d2 = new DateTime(to.Year, to.Month, to.Day, to.Hour, to.Minute, 0);
             List<CrontabInstance> l = this.FindAll(
                 delegate(CrontabInstance c)
                 {
-                    if ((c.Date >= from) &&
-                        (c.Date <= to))
+                    if ((c.Date >= d1) &&
+                        (c.Date <= d2))
                     {
                         return true;
                     }

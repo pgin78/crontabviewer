@@ -34,6 +34,7 @@ namespace MaciejRogozinski.CrontabViewer.Engine
         /// <returns>Returns empty string if supplied string failed validation, otherwise the valid string.</returns>
         private String validateRawValue(String s)
         {
+            //TODO: not needed anymore
             Regex reg = new Regex(@"([0-9]+)(-)([0-9]+)", RegexOptions.Singleline);
             if (reg.IsMatch(s))
             {
@@ -68,13 +69,13 @@ namespace MaciejRogozinski.CrontabViewer.Engine
             String line = String.Empty;
             while ((line = r.ReadLine()) != null)
             {
+                
                 Regex reg = new Regex(@"^\s*" +
-                    @"(?<minute>(([0-9]+)\-([0-9]+))|([0-9]+)|(\*)|(([0-9]+\s*\,\s*)+(\s*[0-9]+)))\s+" +
-                    @"(?<hour>(([0-9]+)\-([0-9]+))|([0-9]+)|(\*)|(([0-9]+\s*\,\s*)+(\s*[0-9]+)))\s+" +
-                    @"(?<day>(([0-9]+)\-([0-9]+))|([0-9]+)|(\*)|(([0-9]+\s*\,\s*)+(\s*[0-9]+)))\s+" +
-                    @"(?<month>(([0-9]+)\-([0-9]+))|([0-9]+)|(\*)|(([0-9]+\s*\,\s*)+(\s*[0-9]+)))\s+" +
-                    @"(?<weekday>(([0-9]+)\-([0-9]+))|([0-9]+)|(\*)|(([0-9]+\s*\,\s*)+(\s*[0-9]+)))\s+" +
-                    @"(?<taskName>.*)", RegexOptions.Singleline);
+                    @"^(?<minute>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)\s+" +
+                    @"(?<hour>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)\s+" +
+                    @"(?<day>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)\s+" +
+                    @"(?<month>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)\s+" +
+                    @"(?<weekday>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)\s+(?<taskName>.*)", RegexOptions.Singleline);
                 if (reg.IsMatch(line))
                 {
                     Match m = reg.Match(line);

@@ -415,7 +415,7 @@ namespace MaciejRogozinski.CrontabViewer
                         this.ruleGridView.Rows[i].Selected = true;
                         this.ruleGridView.CurrentCell = this.ruleGridView.Rows[i].Cells[0];
                     }
-                    else
+                    else if(position > FindWindow.DEFAULT_POSITION)
                     {
                         this.ruleGridView.Rows[position].Selected = false;
                     }
@@ -427,7 +427,7 @@ namespace MaciejRogozinski.CrontabViewer
                         this.instanceGridView.Rows[i].Selected = true;
                         this.instanceGridView.CurrentCell = this.instanceGridView.Rows[i].Cells[0];
                     }
-                    else
+                    else if (position > FindWindow.DEFAULT_POSITION)
                     {
                         this.instanceGridView.Rows[position].Selected = false;
                     }
