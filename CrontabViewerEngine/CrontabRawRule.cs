@@ -137,13 +137,15 @@ namespace MaciejRogozinski.CrontabViewer.Engine
         /// <returns>Collection of crontab rule values.</returns>
         private IEnumerable<int> parseValue(String s)
         {
+            //TODO:needs a correction, 2-6,9,10 is read as 2-6, 6,9,10 or something similar
+            //(?<minute>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)
+            List<int> l = new List<int>();
             Regex reg = new Regex(@"([0-9]+)(-)([0-9]+)", RegexOptions.Singleline);
             if (reg.IsMatch(s))
             {
                 Match m = reg.Match(s);
                 int i1 = int.Parse(m.Groups[1].ToString());
                 int i2 = int.Parse(m.Groups[3].ToString());
-                List<int> l = new List<int>();
                 if (i1 >= i2)
                 {
                     for (int i = i1; i <= 23; i++)
@@ -162,15 +164,14 @@ namespace MaciejRogozinski.CrontabViewer.Engine
                         l.Add(i + i1);
                     }
                 }
-                return l;
             }
+            s = reg.Replace(s, string.Empty);
 
             reg = new Regex(@"(([0-9]+\s*\,\s*)+(\s*[0-9]+))", RegexOptions.Singleline);
             if (reg.IsMatch(s))
             {
                 Match m = reg.Match(s);
                 string[] numbers = m.Groups[0].ToString().Split(',');
-                List<int> l = new List<int>();
                 int res = 0;
                 foreach (string n in numbers)
                 {
@@ -180,7 +181,6 @@ namespace MaciejRogozinski.CrontabViewer.Engine
                     }
                     
                 }
-                return l;
             }
 
             reg = new Regex(@"([0-9]+)", RegexOptions.Singleline);
@@ -188,19 +188,15 @@ namespace MaciejRogozinski.CrontabViewer.Engine
             {
                 Match m = reg.Match(s);
                 int i1 = int.Parse(m.Groups[1].ToString());
-                List<int> l = new List<int>();
                 l.Add(i1);
-                return l;
             }
-            
+            //TODO: can hour-part of crontab entry contain * and something else?
             reg = new Regex(@"\*", RegexOptions.Singleline);
             if (reg.IsMatch(s))
             {
-                List<int> l = new List<int>();
                 l.Add(-1);
-                return l;
             }
-            return new List<int>();
+            return l;
         }
     }
 }
