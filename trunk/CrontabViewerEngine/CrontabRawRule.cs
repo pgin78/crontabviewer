@@ -137,37 +137,40 @@ namespace MaciejRogozinski.CrontabViewer.Engine
         /// <returns>Collection of crontab rule values.</returns>
         private IEnumerable<int> parseValue(String s)
         {
+
             //TODO:needs a correction, 2-6,9,10 is read as 2-6, 6,9,10 or something similar
-            //(?<minute>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)
             List<int> l = new List<int>();
-            Regex reg = new Regex(@"([0-9]+)(-)([0-9]+)", RegexOptions.Singleline);
+            Regex reg = new Regex(@"([0-9]+)-([0-9]+)", RegexOptions.Multiline);
             if (reg.IsMatch(s))
             {
-                Match m = reg.Match(s);
-                int i1 = int.Parse(m.Groups[1].ToString());
-                int i2 = int.Parse(m.Groups[3].ToString());
-                if (i1 >= i2)
+                MatchCollection mc = reg.Matches(s);
+                foreach (Match m in mc)
                 {
-                    for (int i = i1; i <= 23; i++)
+                    int i1 = int.Parse(m.Groups[1].ToString());
+                    int i2 = int.Parse(m.Groups[2].ToString());
+                    if (i1 >= i2)
                     {
-                        l.Add(i);
+                        for (int i = i1; i <= 23; i++)
+                        {
+                            l.Add(i);
+                        }
+                        for (int i = 0; i <= i2; i++)
+                        {
+                            l.Add(i);
+                        }
                     }
-                    for (int i = 0; i <= i2; i++)
+                    else
                     {
-                        l.Add(i);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i <= (i2 - i1); i++)
-                    {
-                        l.Add(i + i1);
+                        for (int i = 0; i <= (i2 - i1); i++)
+                        {
+                            l.Add(i + i1);
+                        }
                     }
                 }
             }
             s = reg.Replace(s, string.Empty);
 
-            reg = new Regex(@"(([0-9]+\s*\,\s*)+(\s*[0-9]+))", RegexOptions.Singleline);
+            reg = new Regex(@"(([0-9]+\s*\,+\s*)+(\s*[0-9]+))");
             if (reg.IsMatch(s))
             {
                 Match m = reg.Match(s);
@@ -175,13 +178,14 @@ namespace MaciejRogozinski.CrontabViewer.Engine
                 int res = 0;
                 foreach (string n in numbers)
                 {
-                    if(int.TryParse(n, out res))
+                    if (int.TryParse(n, out res))
                     {
                         l.Add(res);
                     }
-                    
+
                 }
             }
+            s = reg.Replace(s, string.Empty);
 
             reg = new Regex(@"([0-9]+)", RegexOptions.Singleline);
             if (reg.IsMatch(s))
@@ -190,7 +194,7 @@ namespace MaciejRogozinski.CrontabViewer.Engine
                 int i1 = int.Parse(m.Groups[1].ToString());
                 l.Add(i1);
             }
-            //TODO: can hour-part of crontab entry contain * and something else?
+            //TODO: can hour-part of crontab entry contain * and at the same time something else?
             reg = new Regex(@"\*", RegexOptions.Singleline);
             if (reg.IsMatch(s))
             {
