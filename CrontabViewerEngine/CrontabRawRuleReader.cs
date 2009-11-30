@@ -69,7 +69,7 @@ namespace MaciejRogozinski.CrontabViewer.Engine
             String line = String.Empty;
             while ((line = r.ReadLine()) != null)
             {
-                
+
                 Regex reg = new Regex(@"^\s*" +
                     @"^(?<minute>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)\s+" +
                     @"(?<hour>[0-9]+(?:(?:\,|\-)[0-9]+)*|\*)\s+" +
