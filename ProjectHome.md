@@ -1,0 +1,1 @@
+CrontabViewer is a software that helps users with reading crontab. It presents cron tasks in human readable form.
